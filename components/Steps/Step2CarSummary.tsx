@@ -10,6 +10,7 @@ interface Props {
 
 const RATING_TITLES = ["Excellent", "Very Good", "Good", "Neutral", "Poor"];
 const OWNERSHIP_TYPES = ["Individual", "Corporate", "Government"];
+const OWNERSHIP_NO = ["1", "2", "3", "4", "5"];
 
 
 function Field({
@@ -87,7 +88,7 @@ export default function Step2CarSummary({ data, onChange, errors }: Props) {
     <div>
       <div className="bg-slate-50 border-b border-slate-200 px-7 py-5">
         <div className="inline-flex items-center gap-2 bg-orange-50 border border-orange-200 text-orange-600 text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-2">
-          📋 Step 2 of 9
+          📋 Step 2 of 7
         </div>
         <h2
           className="font-black text-xl text-slate-800"
@@ -101,7 +102,7 @@ export default function Step2CarSummary({ data, onChange, errors }: Props) {
       </div>
 
       <div className="p-7">
-        <SectionTitle>Car Image</SectionTitle>
+        <SectionTitle>Car Front Photo</SectionTitle>
         <div
           onClick={() => fileRef.current?.click()}
           className="border-2 border-dashed border-slate-200 rounded-2xl p-6 flex flex-col items-center justify-center cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition-all min-h-[120px] relative overflow-hidden"
@@ -130,7 +131,7 @@ export default function Step2CarSummary({ data, onChange, errors }: Props) {
         </div>
 
         <SectionTitle>Rating & Odometer</SectionTitle>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {/* <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <Field
             id="overallRating"
             label="Overall Rating"
@@ -175,7 +176,7 @@ export default function Step2CarSummary({ data, onChange, errors }: Props) {
               className={inputCls("odometer_km")}
             />
           </Field>
-        </div>
+        </div> */}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
           <Field
@@ -193,18 +194,28 @@ export default function Step2CarSummary({ data, onChange, errors }: Props) {
             />
           </Field>
           <Field id="ownershipNo" label="Ownership No" required errors={errors}>
-            <input
+            {/* <input
               type="number"
               value={data.ownershipNo}
               onChange={(e) => onChange("ownershipNo", e.target.value)}
               placeholder="2"
               min="1"
               className={inputCls("ownershipNo")}
-            />
+            /> */}
+             <select
+              value={data.ownershipNo}
+              onChange={(e) => onChange("ownershipNo", e.target.value)}
+              className={inputCls("ownershipNo")}
+            >
+              <option value="">— Select —</option>
+              {OWNERSHIP_NO.map((t) => (
+                <option key={t}>{t}</option>
+              ))}
+            </select>
           </Field>
         </div>
 
-        <SectionTitle>Health Report Summary</SectionTitle>
+        {/* <SectionTitle>Health Report Summary</SectionTitle>
         <Field
           id="healthSummary"
           label="Health Report Summary"
@@ -218,7 +229,7 @@ export default function Step2CarSummary({ data, onChange, errors }: Props) {
             rows={4}
             className={`w-full bg-slate-50 border-[1.5px] rounded-xl px-3.5 py-2.5 text-sm font-medium text-slate-800 outline-none resize-y transition-all focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-100 ${errors["healthSummary"] ? "border-red-400 ring-2 ring-red-100" : "border-slate-200"}`}
           />
-        </Field>
+        </Field> */}
 
         <SectionTitle>Ownership & Fitness</SectionTitle>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -274,6 +285,14 @@ export default function Step2CarSummary({ data, onChange, errors }: Props) {
               value={data.puccValidity}
               onChange={(e) => onChange("puccValidity", e.target.value)}
               className={inputCls("puccValidity")}
+            />
+          </Field>
+          <Field id="rtoNocDate" label="RTO NOC Issue Date" errors={errors}>
+            <input
+              type="date"
+              value={data.rtoNocDate}
+              onChange={(e) => onChange("rtoNocDate", e.target.value)}
+              className={inputCls("rtoNocDate")}
             />
           </Field>
         </div>

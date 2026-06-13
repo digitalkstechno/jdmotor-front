@@ -8,12 +8,14 @@ const buildSection1 = (data: FormData) => ({
     car_name: data.carName,
     variant: data.variantName,
     model_year: data.modal ? Number(data.modal) : undefined,
+    model_month: data.modelMonth || undefined,
     type: data.type,
     fuel_type: data.fuelType,
     state: data.location,
     city: data.cityName,
     inspection_date: data.reportDate,
     inspected_by: data.Inspected_by,
+    inspection_type: data.inspectionType,
   },
 });
 
@@ -59,6 +61,7 @@ const buildSection2FormData = (data: FormData): FormData_Web => {
     registration_place: data.regPlace || undefined,
     fitness_validity: data.fitnessValidity || undefined,
     pucc_validity: data.puccValidity || undefined,
+    rto_noc_issue_date: data.rtoNocDate || undefined,
     blacklisted: data.blacklisted === "true" ? "Yes" : "No",
   };
 
@@ -75,21 +78,22 @@ const buildSection2FormData = (data: FormData): FormData_Web => {
 // ─── Section 3 Payload ───────────────────────────────────────────────────────
 const buildSection3 = (data: FormData) => ({
   transferability_legal: {
-    rto_noc_issue_date: data.rtoNocDate || undefined,
-    party_peshi_applicability: data.partyPeshi,
+    // rto_noc_issue_date: data.rtoNocDate || undefined,
+    // party_peshi_applicability: data.partyPeshi,
     hypothecation: data.hypothecation,
     financier_name: data.financierName,
-    converted: data.modConverted,
-    migration: data.modMigration,
-    adapted_for_special_use: data.modAdapter,
-    criminal_case: data.criminalCases ? Number(data.criminalCases) : 0,
-    civil_case: data.civilCases ? Number(data.civilCases) : 0,
-    road_accidents: data.roadAccidents ? Number(data.roadAccidents) : 0,
-    theft_cases: data.theftCases ? Number(data.theftCases) : 0,
-    compensation_case: data.compensationCases
-      ? Number(data.compensationCases)
-      : 0,
-    other_case: data.otherCases ? Number(data.otherCases) : 0,
+    // converted: data.modConverted,
+    // migration: data.modMigration,
+    // adapted_for_special_use: data.modAdapter,
+    any_changes_or_modifications: data.anyModification,
+    // criminal_case: data.criminalCases ? Number(data.criminalCases) : 0,
+    // civil_case: data.civilCases ? Number(data.civilCases) : 0,
+    // road_accidents: data.roadAccidents ? Number(data.roadAccidents) : 0,
+    // theft_cases: data.theftCases ? Number(data.theftCases) : 0,
+    // compensation_case: data.compensationCases
+    //   ? Number(data.compensationCases)
+    //   : 0,
+    // other_case: data.otherCases ? Number(data.otherCases) : 0,
   },
 });
 

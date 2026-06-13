@@ -39,7 +39,7 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', weight: ['300', '400', '500', '600', '700', '800'] });
 
 export const metadata: Metadata = {
-  title: 'PDI Inspection Form – Car Truth',
+  title: 'PDI Inspection Form – Ride X',
   description: 'Pre-Delivery Inspection Form',
 };
 

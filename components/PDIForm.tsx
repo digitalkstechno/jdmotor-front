@@ -10,8 +10,6 @@ import Step4CategoryRatings from './Steps/Step4CategoryRatings';
 import Step5VehicleImages from './Steps/Step5VehicalImage';
 import Step6Exterior from './Steps/Step6Exterior';
 import Step7Engine from './Steps/Step7Engine';
-import Step8OtherImages from './Steps/Step8OtherImages';
-import Step9OEMFeatures from './Steps/Step9OEMFeatures';
 import {
   createInspection,
   updateSection1,
@@ -25,11 +23,11 @@ import {
   updateSection9,
 } from '../lib/inspectionApi';
 
-const TOTAL_PAGES = 9;
+const TOTAL_PAGES = 7;
 
 const PAGE_REQUIRED: Record<number, (keyof FormData)[]> = {
-  1: ['companyName', 'carName', 'modal', 'type', 'fuelType', 'location', 'reportDate', 'Inspected_by'],
-  2: ['overallRating', 'ratingTitle', 'odometer_km', 'estimateValue', 'ownershipNo', 'healthSummary', 'ownerName', 'blacklisted'],
+  1: ['companyName', 'carName', 'modal', 'modelMonth', 'type', 'fuelType', 'location', 'reportDate', 'Inspected_by', 'inspectionType'],
+  2: ['estimateValue', 'ownershipNo', 'ownerName', 'blacklisted'],
 };
 
 export default function PDIForm() {
@@ -77,16 +75,18 @@ export default function PDIForm() {
           await updateSection1(inspectionId, formData);
         }
       } else if (inspectionId) {
-        // Step 2-9: UPDATE respective section
+        // Step 2-7: UPDATE respective section
         switch (page) {
-       case 2: await updateSection2(inspectionId, formData); break;
+          case 2: await updateSection2(inspectionId, formData); break;
           case 3: await updateSection3(inspectionId, formData); break;
-          case 4: await updateSection4(inspectionId, formData); break;
-          case 5: await updateSection5(inspectionId, formData); break;
-          case 6: await updateSection6(inspectionId, formData); break;
-          case 7: await updateSection7(inspectionId, formData); break;
-          case 8: await updateSection8(inspectionId, formData); break;
-          case 9: await updateSection9(inspectionId, formData); break;
+          case 4: {
+            await updateSection5(inspectionId, formData);
+            await updateSection8(inspectionId, formData);
+            break;
+          }
+          case 5: await updateSection6(inspectionId, formData); break;
+          case 6: await updateSection7(inspectionId, formData); break;
+          case 7: await updateSection4(inspectionId, formData); break;
         }
       }
       return true;
@@ -125,7 +125,7 @@ export default function PDIForm() {
   // ─── Final Submit (Step 9 Next) ────────────────────────────────────────────
   const handleSubmit = async () => {
     setIsLoading(true);
-    const success = await saveCurrentPage(9);
+    const success = await saveCurrentPage(7);
     setIsLoading(false);
 
     if (success && inspectionId) {
@@ -146,7 +146,7 @@ export default function PDIForm() {
       <div className="bg-white border border-b-0 border-slate-200 rounded-t-2xl px-7 py-5 flex items-center gap-3">
         <div className="flex items-center gap-2" style={{ fontFamily: "'Inter', sans-serif" }}>
           <span className="text-2xl">🚗</span>
-          <span className="font-black text-lg text-orange-500">CAR TRUTH</span>
+          <span className="font-black text-lg text-orange-500">Ride X</span>
           <span className="text-slate-400 text-sm font-normal">PDI Inspection Entry</span>
         </div>
       </div>
@@ -158,12 +158,10 @@ export default function PDIForm() {
         {currentPage === 1 && <Step1VehicleDetails {...sharedStringProps} />}
         {currentPage === 2 && <Step2CarSummary data={formData} onChange={handleChange as (field: keyof FormData, value: string | File | null) => void} errors={errors} />}
         {currentPage === 3 && <Step3Legal {...sharedStringProps} />}
-        {currentPage === 4 && <Step4CategoryRatings data={formData} onChange={handleChange as (field: keyof FormData, value: string) => void} />}
-        {currentPage === 5 && <Step5VehicleImages data={formData} onChange={handleChange as (field: keyof FormData, value: (File | null)[]) => void} />}
-        {currentPage === 6 && <Step6Exterior data={formData} onChange={handleChange as (field: keyof FormData, value: string | Record<string, string>) => void} />}
-        {currentPage === 7 && <Step7Engine data={formData} onChange={handleChange as (field: keyof FormData, value: string | Record<string, string>) => void} />}
-        {currentPage === 8 && <Step8OtherImages data={formData} onChange={handleChange} />}
-        {currentPage === 9 && <Step9OEMFeatures {...sharedStringProps} />}
+        {currentPage === 4 && <Step5VehicleImages data={formData} onChange={handleChange} />}
+        {currentPage === 5 && <Step6Exterior data={formData} onChange={handleChange as (field: keyof FormData, value: string | Record<string, string>) => void} />}
+        {currentPage === 6 && <Step7Engine data={formData} onChange={handleChange as (field: keyof FormData, value: string | Record<string, string>) => void} />}
+        {currentPage === 7 && <Step4CategoryRatings data={formData} onChange={handleChange as (field: keyof FormData, value: string) => void} />}
 
         {/* API Error Banner */}
         {apiError && (

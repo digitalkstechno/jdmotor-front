@@ -43,7 +43,7 @@ export default function Step3Legal({ data, onChange, errors }: Props) {
     <div>
       <div className="bg-slate-50 border-b border-slate-200 px-7 py-5">
         <div className="inline-flex items-center gap-2 bg-orange-50 border border-orange-200 text-orange-600 text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-2">
-          ⚖️ Step 3 of 9
+          ⚖️ Step 3 of 7
         </div>
         <h2 className="font-black text-xl text-slate-800" style={{ fontFamily: "'Inter', sans-serif" }}>Transferability & Legal</h2>
         <p className="text-sm text-slate-500 mt-0.5">NOC, hypothecation, modifications and legal cases</p>
@@ -52,21 +52,36 @@ export default function Step3Legal({ data, onChange, errors }: Props) {
       <div className="p-7">
         <SectionTitle>Transferability Details</SectionTitle>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Field id="rtoNocDate" label="RTO NOC Issue Date">
+            {/* <Field id="rtoNocDate" label="RTO NOC Issue Date">
             <input type="date" value={data.rtoNocDate} onChange={e => onChange('rtoNocDate', e.target.value)} className={inputCls('rtoNocDate', errors)} />
-          </Field>
-          <Field id="partyPeshi" label="Party Peshi Applicability">
+          </Field> */}
+          {/* <Field id="partyPeshi" label="Party Peshi Applicability">
             <YesNo name="partyPeshi" value={data.partyPeshi} errors={errors} onChange={onChange} />
-          </Field>
+          </Field> */}
           <Field id="hypothecation" label="Hypothecation">
-            <YesNo name="hypothecation" value={data.hypothecation} errors={errors} onChange={onChange} />
+            <YesNo
+              name="hypothecation"
+              value={data.hypothecation}
+              errors={errors}
+              onChange={(field, val) => {
+                onChange('hypothecation', val);
+                if (val !== 'Yes') {
+                  onChange('financierName', '');
+                }
+              }}
+            />
           </Field>
-          <Field id="financierName" label="Financier Name">
-            <input type="text" value={data.financierName} onChange={e => onChange('financierName', e.target.value)} placeholder="e.g. HDFC Bank Pvt. Ltd." className={inputCls('financierName', errors)} />
+          {data.hypothecation === 'Yes' && (
+            <Field id="financierName" label="Financier Name">
+              <input type="text" value={data.financierName} onChange={e => onChange('financierName', e.target.value)} placeholder="e.g. HDFC Bank Pvt. Ltd." className={inputCls('financierName', errors)} />
+            </Field>
+          )}
+          <Field id="anyModification" label="Any Changes or Modifications">
+            <YesNo name="anyModification" value={data.anyModification} errors={errors} onChange={onChange} />
           </Field>
         </div>
 
-        <SectionTitle>Vehicle Modification</SectionTitle>
+        {/* <SectionTitle>Vehicle Modification</SectionTitle>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <Field id="modConverted" label="Converted (Commercial → Private)">
             <YesNo name="modConverted" value={data.modConverted} errors={errors} onChange={onChange} />
@@ -77,9 +92,9 @@ export default function Step3Legal({ data, onChange, errors }: Props) {
           <Field id="modAdapter" label="Adapted for Special Use">
             <YesNo name="modAdapter" value={data.modAdapter} errors={errors} onChange={onChange} />
           </Field>
-        </div>
+        </div> */}
 
-        <SectionTitle>Legal History</SectionTitle>
+        {/* <SectionTitle>Legal History</SectionTitle>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
           {[
             { id: 'criminalCases', label: 'Criminal Cases', val: data.criminalCases },
@@ -93,7 +108,7 @@ export default function Step3Legal({ data, onChange, errors }: Props) {
               <input type="number" value={f.val} onChange={e => onChange(f.id as keyof FormData, e.target.value)} placeholder="0" min="0" className={inputCls(f.id, errors)} />
             </Field>
           ))}
-        </div>
+        </div> */}
       </div>
     </div>
   );

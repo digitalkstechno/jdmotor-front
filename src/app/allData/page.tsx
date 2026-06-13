@@ -102,7 +102,7 @@ console.log("API Response:", res.data);
                 letterSpacing: 1,
               }}
             >
-              CAR TRUTH
+              Ride X
             </div>
             <div style={{ fontSize: 10, color: "#93c5fd" }}>BY CARS24</div>
           </div>

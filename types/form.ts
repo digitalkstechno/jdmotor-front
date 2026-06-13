@@ -4,12 +4,14 @@ export interface FormData {
   carName: string;
   variantName: string;
   modal: string;
+  modelMonth: string;
   type: string;
   fuelType: string;
   location: string;
   cityName: string;
   reportDate: string;
   Inspected_by: string;
+  inspectionType: string;
 
   // Page 2 - Car Summary
   car_image: File | null;
@@ -36,6 +38,7 @@ export interface FormData {
   modConverted: string;
   modMigration: string;
   modAdapter: string;
+  anyModification: string;
   criminalCases: string;
   civilCases: string;
   roadAccidents: string;
@@ -135,12 +138,14 @@ export const initialFormData: FormData = {
   carName: "",
   variantName: "",
   modal: "",
+  modelMonth: "",
   type: "",
   fuelType: "",
   location: "",
   cityName: "",
   reportDate: new Date().toISOString().split("T")[0],
   Inspected_by: "",
+  inspectionType: "",
   car_image: null,
   car_image_url: '',
   overallRating: "",
@@ -163,6 +168,7 @@ export const initialFormData: FormData = {
   modConverted: "",
   modMigration: "",
   modAdapter: "",
+  anyModification: "",
   criminalCases: "",
   civilCases: "",
   roadAccidents: "",

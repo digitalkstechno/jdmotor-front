@@ -73,7 +73,7 @@ export default function Step9OEMFeatures({ data, onChange }: Props) {
     <div>
       <div className="bg-slate-50 border-b border-slate-200 px-7 py-5">
         <div className="inline-flex items-center gap-2 bg-orange-50 border border-orange-200 text-orange-600 text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-2">
-          🏷️ Step 9 of 9
+          🏷️ Step 8 of 8
         </div>
         <h2
           className="font-black text-xl text-slate-800"

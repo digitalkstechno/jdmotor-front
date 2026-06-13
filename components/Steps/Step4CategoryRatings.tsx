@@ -32,13 +32,41 @@ export default function Step4CategoryRatings({ data, onChange }: Props) {
     <div>
       <div className="bg-slate-50 border-b border-slate-200 px-7 py-5">
         <div className="inline-flex items-center gap-2 bg-orange-50 border border-orange-200 text-orange-600 text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-2">
-          ⭐ Step 4 of 9
+          ⭐ Step 7 of 7
         </div>
         <h2 className="font-black text-xl text-slate-800" style={{ fontFamily: "'Inter', sans-serif" }}>Category Ratings</h2>
         <p className="text-sm text-slate-500 mt-0.5">Rating for each inspection category</p>
       </div>
 
       <div className="p-7 space-y-4">
+        {/* Repair Costs Section */}
+        <h3 className="text-[12px] font-black uppercase tracking-widest text-blue-600 border-b-2 border-slate-100 pb-2 mb-4" style={{ fontFamily: "'Inter', sans-serif" }}>01. Repair Costs</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pb-4">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-[11px] font-bold uppercase tracking-widest text-slate-500">Exterior Repair Cost (₹)</label>
+            <input
+              type="number"
+              value={data.ext_repair_cost}
+              onChange={e => onChange('ext_repair_cost', e.target.value)}
+              placeholder="e.g. 10000"
+              min="0"
+              className="w-full bg-slate-50 border-[1.5px] border-slate-200 rounded-xl px-3.5 py-2.5 text-sm font-medium text-slate-800 outline-none focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-100 transition-all"
+            />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-[11px] font-bold uppercase tracking-widest text-slate-500">Steering Repair Cost (₹)</label>
+            <input
+              type="number"
+              value={data.steering_repair_cost}
+              onChange={e => onChange('steering_repair_cost', e.target.value)}
+              placeholder="e.g. 4000"
+              min="0"
+              className="w-full bg-slate-50 border-[1.5px] border-slate-200 rounded-xl px-3.5 py-2.5 text-sm font-medium text-slate-800 outline-none focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-100 transition-all"
+            />
+          </div>
+        </div>
+
+        <h3 className="text-[12px] font-black uppercase tracking-widest text-blue-600 border-b-2 border-slate-100 pb-2 mt-6 mb-4" style={{ fontFamily: "'Inter', sans-serif" }}>02. Category Ratings</h3>
         {CATEGORIES.map(cat => {
           const ratingVal = parseFloat((data as unknown as Record<string, string>)[cat.ratingKey] || '0');
           return (

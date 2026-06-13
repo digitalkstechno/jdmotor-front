@@ -9,24 +9,41 @@ interface Props {
 
 const FUEL_TYPES = ['Petrol', 'Diesel', 'CNG', 'Electric', 'Hybrid'];
 
+const MONTHS = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December'
+];
+
+const currentYear = new Date().getFullYear();
+const YEARS = Array.from({ length: currentYear - 1990 + 1 }, (_, i) => String(currentYear - i));
+
 const BRAND_CARS: Record<string, string[]> = {
-  'Maruti Suzuki': ['Alto', 'Swift', 'Baleno', 'Dzire', 'Ertiga', 'Brezza', 'Celerio', 'Ignis', 'S-Cross', 'Wagon R', 'XL6'],
-  'Hyundai': ['i10', 'i20', 'Aura', 'Verna', 'Creta', 'Venue', 'Tucson', 'Alcazar', 'Exter'],
-  'Tata Motors': ['Tiago', 'Tigor', 'Altroz', 'Nexon', 'Harrier', 'Safari', 'Punch', 'Curvv'],
-  'Honda': ['Amaze', 'City', 'Jazz', 'WR-V', 'Elevate'],
-  'Toyota': ['Glanza', 'Urban Cruiser', 'Innova', 'Fortuner', 'Camry', 'Hyryder'],
-  'Mahindra': ['Bolero', 'Scorpio', 'XUV300', 'XUV400', 'XUV700', 'Thar', 'BE 6'],
-  'Kia': ['Sonet', 'Seltos', 'Carens', 'EV6'],
-  'MG': ['Hector', 'Astor', 'Gloster', 'ZS EV', 'Comet'],
-  'Renault': ['Kwid', 'Triber', 'Kiger'],
-  'Nissan': ['Magnite'],
-  'Volkswagen': ['Polo', 'Vento', 'Taigun', 'Virtus'],
-  'Skoda': ['Rapid', 'Octavia', 'Superb', 'Kushaq', 'Slavia'],
-  'Ford': ['Figo', 'Aspire', 'EcoSport', 'Endeavour'],
-  'Jeep': ['Compass', 'Meridian', 'Wrangler'],
-  'BMW': ['3 Series', '5 Series', 'X1', 'X3', 'X5'],
-  'Mercedes-Benz': ['A-Class', 'C-Class', 'E-Class', 'GLA', 'GLC'],
-  'Audi': ['A4', 'A6', 'Q3', 'Q5', 'Q7'],
+  'Maruti Suzuki': ['800', 'Alto', 'Alto K10', 'S-Presso', 'Celerio', 'Wagon R', 'Swift', 'Dzire', 'Baleno', 'Ignis', 'Fronx', 'Brezza', 'Grand Vitara', 'Ertiga', 'XL6', 'Ciaz', 'Jimny', 'Invicto'],
+'Hyundai': ['Santro', 'i10', 'Grand i10', 'Grand i10 Nios', 'i20', 'Aura', 'Verna', 'Venue', 'Creta', 'Alcazar', 'Tucson', 'Exter', 'IONIQ 5'],
+'Tata Motors': ['Nano', 'Tiago', 'Tigor', 'Altroz', 'Punch', 'Nexon', 'Harrier', 'Safari', 'Curvv', 'Tiago EV', 'Tigor EV', 'Nexon EV', 'Punch EV'],
+'Mahindra': ['Bolero', 'Bolero Neo', 'Scorpio', 'Scorpio N', 'Thar', 'XUV300', 'XUV3XO', 'XUV400', 'XUV700', 'Marazzo', 'BE 6', 'XEV 9e'],
+'Toyota': ['Glanza', 'Taisor', 'Urban Cruiser Hyryder', 'Rumion', 'Innova Crysta', 'Innova Hycross', 'Fortuner', 'Legender', 'Camry', 'Vellfire'],
+'Honda': ['Amaze', 'City', 'City Hybrid', 'Jazz', 'WR-V', 'Elevate', 'Brio'],
+'Kia': ['Sonet', 'Seltos', 'Carens', 'Carnival', 'EV6', 'Syros'],
+'MG': ['Comet EV', 'Astor', 'Hector', 'Hector Plus', 'Gloster', 'ZS EV', 'Windsor EV'],
+'Renault': ['Kwid', 'Triber', 'Kiger', 'Duster'],
+'Nissan': ['Magnite', 'Kicks'],
+'Volkswagen': ['Polo', 'Vento', 'Virtus', 'Taigun', 'Tiguan'],
+'Skoda': ['Rapid', 'Slavia', 'Kushaq', 'Superb', 'Octavia', 'Kodiaq'],
+'Ford': ['Figo', 'Aspire', 'EcoSport', 'Endeavour'],
+'Jeep': ['Compass', 'Meridian', 'Wrangler', 'Grand Cherokee'],
+'BMW': ['2 Series', '3 Series', '5 Series', '7 Series', 'X1', 'X3', 'X5', 'X7', 'i4', 'iX'],
+'Mercedes-Benz': ['A-Class', 'C-Class', 'E-Class', 'S-Class', 'GLA', 'GLB', 'GLC', 'GLE', 'GLS', 'EQB', 'EQS'],
+'Audi': ['A4', 'A6', 'A8', 'Q3', 'Q5', 'Q7', 'Q8', 'e-tron', 'Q8 e-tron'],
+'BYD': ['Atto 3', 'Seal', 'eMAX 7'],
+'Citroen': ['C3', 'eC3', 'C3 Aircross', 'Basalt'],
+'Isuzu': ['D-Max', 'V-Cross', 'MU-X'],
+'Lexus': ['ES', 'LS', 'NX', 'RX', 'LX'],
+'Land Rover': ['Defender', 'Discovery Sport', 'Range Rover Evoque', 'Range Rover Velar', 'Range Rover Sport', 'Range Rover'],
+'Volvo': ['XC40', 'XC60', 'XC90', 'C40 Recharge', 'EX40'],
+'Porsche': ['Macan', 'Cayenne', 'Panamera', '911', 'Taycan'],
+'Jaguar': ['F-Pace', 'I-Pace'],
+'Mini': ['Cooper 3 Door', 'Cooper 5 Door', 'Countryman'],
 };
 
 const CAR_VARIANTS: Record<string, string[]> = {
@@ -106,9 +123,9 @@ export default function Step1VehicleDetails({ data, onChange, errors }: Props) {
     <div>
       <div className="bg-slate-50 border-b border-slate-200 px-7 py-5">
         <div className="inline-flex items-center gap-2 bg-orange-50 border border-orange-200 text-orange-600 text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-2">
-          🚗 Step 1 of 9
+          🚗 Step 1 of 7
         </div>
-        <h2 className="font-black text-xl text-slate-800" style={{ fontFamily: "'Inter', sans-serif" }}>Vehicle Details</h2>
+        <h2 className="font-black text-xl text-slate-800" style={{ fontFamily: "'Inter', sans-serif" }}>Part - 1</h2>
         <p className="text-sm text-slate-500 mt-0.5">Basic car and inspection information</p>
       </div>
 
@@ -138,21 +155,34 @@ export default function Step1VehicleDetails({ data, onChange, errors }: Props) {
         {/* Row 2 */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <Field id="modal" label="Model Year" required errors={errors}>
-            <input id="modal" type="number" value={data.modal} onChange={e => onChange('modal', e.target.value)} placeholder="e.g. 2025" min="1900" max="2100" className={inputCls('modal')} />
+            <select id="modal" value={data.modal} onChange={e => onChange('modal', e.target.value)} className={inputCls('modal')}>
+              <option value="">— Select —</option>
+              {YEARS.map(y => <option key={y} value={y}>{y}</option>)}
+            </select>
+          </Field>
+          <Field id="modelMonth" label="Model Month" required errors={errors}>
+            <select id="modelMonth" value={data.modelMonth} onChange={e => onChange('modelMonth', e.target.value)} className={inputCls('modelMonth')}>
+              <option value="">— Select —</option>
+              {MONTHS.map(m => <option key={m} value={m}>{m}</option>)}
+            </select>
           </Field>
           <Field id="type" label="Type" required errors={errors}>
-            <input id="type" type="text" value={data.type} onChange={e => onChange('type', e.target.value)} placeholder="e.g. Automatic" className={inputCls('type')} />
-          </Field>
-          <Field id="fuelType" label="Fuel Type" required errors={errors}>
-            <select id="fuelType" value={data.fuelType} onChange={e => onChange('fuelType', e.target.value)} className={inputCls('fuelType')}>
+            <select id="type" value={data.type} onChange={e => onChange('type', e.target.value)} className={inputCls('type')}>
               <option value="">— Select —</option>
-              {FUEL_TYPES.map(f => <option key={f}>{f}</option>)}
+              <option value="Manual">Manual</option>
+              <option value="Automatic">Automatic</option>
             </select>
           </Field>
         </div>
 
         {/* Row 3 */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+           <Field id="fuelType" label="Fuel Type" required errors={errors}>
+            <select id="fuelType" value={data.fuelType} onChange={e => onChange('fuelType', e.target.value)} className={inputCls('fuelType')}>
+              <option value="">— Select —</option>
+              {FUEL_TYPES.map(f => <option key={f}>{f}</option>)}
+            </select>
+          </Field>
           <Field id="location" label="State" required errors={errors}>
             <select id="location" value={data.location} onChange={e => { onChange('location', e.target.value); onChange('cityName', ''); }} className={inputCls('location')}>
               <option value="">— Select —</option>
@@ -165,12 +195,23 @@ export default function Step1VehicleDetails({ data, onChange, errors }: Props) {
               {(STATES_CITIES[data.location] || []).map(c => <option key={c} value={c}>{c}</option>)}
             </select>
           </Field>
-          <Field id="reportDate" label="Inspection Date" required errors={errors}>
+         
+        </div>
+        {/* Row 4 */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+           <Field id="reportDate" label="Inspection Date" required errors={errors}>
             <input id="reportDate" type="date" value={data.reportDate} onChange={e => onChange('reportDate', e.target.value)} className={inputCls('reportDate')} />
+          </Field>
+          <Field id="inspectionType" label="Car Inspection Types" required errors={errors}>
+            <select id="inspectionType" value={data.inspectionType} onChange={e => onChange('inspectionType', e.target.value)} className={inputCls('inspectionType')}>
+              <option value="">— Select —</option>
+              <option value="New Car">New Car</option>
+              <option value="Used Car">Used Car</option>
+            </select>
           </Field>
         </div>
 
-        {/* Row 4 */}
+        {/* Row 5 */}
         <div className="grid grid-cols-1 gap-4">
           <Field id="Inspected_by" label="Inspected By" required errors={errors}>
             <input id="Inspected_by" type="text" value={data.Inspected_by} onChange={e => onChange('Inspected_by', e.target.value)} placeholder="e.g. Rahul Shah" className={inputCls('Inspected_by')} />

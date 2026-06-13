@@ -4,58 +4,72 @@ import { useParams } from "next/navigation";
 import { getInspectionById } from "../../../../lib/inspectionApi";
 
 // ─── ALL STATIC PARAM LISTS ──────────────────────────────────────────────
+// const PARAMS_LIST = [
+//   "Boot Floor",
+//   "Pillar LHS A",
+//   "Pillar LHS B",
+//   "Pillar LHS C",
+//   "Pillar RHS A",
+//   "Pillar RHS B",
+//   "Pillar RHS C",
+//   "Apron LHS",
+//   "Apron RHS",
+//   "Apron RHS LEG",
+//   "Apron LHS LEG",
+//   "Firewall",
+//   "Cowl Top",
+//   "Upper Cross Member",
+//   "Front Show",
+//   "Lower Cross Member",
+//   "Radiator Support",
+//   "Head Light Support",
+//   "Windshield Rear",
+//   "Light LHS Taillight",
+//   "Light LHS Fog Light",
+//   "Light RHS Fog Light",
+//   "ORVM LHS",
+//   "Tyre / Spare Tyre",
+//   "Grill",
+//   "Is Car Waterlogged",
+//   "Roof",
+//   "Bonnet / Hood",
+//   "Dicky Door / Boot Door",
+//   "Quarter Panel LHS",
+//   "Quarter Panel RHS",
+//   "Fender LHS",
+//   "Fender RHS",
+//   "Running Border LHS",
+//   "Running Border RHS",
+//   "Door LHS Front",
+//   "Door LHS Rear",
+//   "Door RHS Front",
+//   "Door RHS Rear",
+//   "Windshield Front",
+//   "Light LHS Headlight",
+//   "Light RHS Headlight",
+//   "Light RHS Taillight",
+//   "Bumper Front",
+//   "Bumper Rear",
+//   "ORVM RHS",
+//   "Alloy Wheel",
+//   "LHS Front Tyre",
+//   "LHS Rear Tyre",
+//   "RHS Front Tyre",
+//   "RHS Rear Tyre",
+// ];
+
 const PARAMS_LIST = [
-  "Boot Floor",
-  "Pillar LHS A",
-  "Pillar LHS B",
-  "Pillar LHS C",
-  "Pillar RHS A",
-  "Pillar RHS B",
-  "Pillar RHS C",
-  "Apron LHS",
-  "Apron RHS",
-  "Apron RHS LEG",
-  "Apron LHS LEG",
-  "Firewall",
-  "Cowl Top",
-  "Upper Cross Member",
-  "Front Show",
-  "Lower Cross Member",
-  "Radiator Support",
-  "Head Light Support",
-  "Windshield Rear",
-  "Light LHS Taillight",
-  "Light LHS Fog Light",
-  "Light RHS Fog Light",
-  "ORVM LHS",
-  "Tyre / Spare Tyre",
-  "Grill",
-  "Is Car Waterlogged",
-  "Roof",
-  "Bonnet / Hood",
-  "Dicky Door / Boot Door",
-  "Quarter Panel LHS",
-  "Quarter Panel RHS",
-  "Fender LHS",
-  "Fender RHS",
-  "Running Border LHS",
-  "Running Border RHS",
-  "Door LHS Front",
-  "Door LHS Rear",
-  "Door RHS Front",
-  "Door RHS Rear",
-  "Windshield Front",
-  "Light LHS Headlight",
-  "Light RHS Headlight",
-  "Light RHS Taillight",
-  "Bumper Front",
-  "Bumper Rear",
-  "ORVM RHS",
-  "Alloy Wheel",
-  "LHS Front Tyre",
-  "LHS Rear Tyre",
-  "RHS Front Tyre",
-  "RHS Rear Tyre",
+  'Body Parts Condition',
+  "Windshield Condition",
+  "Interior Condition",
+  "Tyre Condition",
+  "Engine Condition",
+  "Suspension Condition",
+  "Brake Condition",
+  "Gearbox Condition",
+  "Electric Condition",
+  "A.C. & Heater Condition",
+  "Accessories Condition"
 ];
 
 const ENGINE_PARAMS_LIST = [
@@ -172,7 +186,7 @@ const LogoHeader = () => (
 const ReportPage = ({
   children,
   pageNum,
-  total = 18,
+  total = 16,
   showCategoryNav = false,
 }: {
   children: React.ReactNode;
@@ -279,12 +293,12 @@ const ParamsTable = ({
 }: {
   staticList: string[];
   data: Record<string, string>;
-  type?: "pi" | "av";
+  type?: "pi" | "av" | "gb";
 }) => {
-  const col1Val = type === "av" ? "available" : "perfect";
-  const col2Val = type === "av" ? "notavailable" : "imperfect";
-  const col1Lbl = type === "av" ? "Available" : "Perfect";
-  const col2Lbl = type === "av" ? "Not Available" : "Imperfect";
+  const col1Val = type === "av" ? "available" : type === "gb" ? "good" : "perfect";
+  const col2Val = type === "av" ? "notavailable" : type === "gb" ? "bad" : "imperfect";
+  const col1Lbl = type === "av" ? "Available" : type === "gb" ? "Good" : "Perfect";
+  const col2Lbl = type === "av" ? "Not Available" : type === "gb" ? "Bad" : "Imperfect";
 
   return (
     <table
@@ -350,8 +364,8 @@ const ParamsTable = ({
                       ? `oth_${key}`
                       : key;
           const val = data[prefixedKey] ?? "";
-          const isCol1 = val === col1Val;
-          const isCol2 = val === col2Val;
+          const isCol1 = val === col1Val || val === "good";
+          const isCol2 = val === col2Val || val === "bad";
           return (
             <tr
               key={label}
@@ -409,28 +423,33 @@ const CategoryBlock = ({
   cost?: string;
   staticList: string[];
   data: Record<string, string>;
-  type?: "pi" | "av";
-}) => (
-  <div
-    style={{
-      marginBottom: 20,
-      border: "1px solid #e2e8f0",
-      borderRadius: 10,
-      overflow: "hidden",
-    }}
-  >
-    <div style={{ background: "#1e3a5f", color: "#fff", padding: "12px 16px" }}>
-      <div style={{ fontSize: 14, fontWeight: 700 }}>
-        {number}. {title}
+  type?: "pi" | "av" | "gb";
+}) => {
+  const lblPerfect = type === "gb" ? "Good" : "Perfect";
+  const lblImperfect = type === "gb" ? "Bad" : "Imperfect";
+
+  return (
+    <div
+      style={{
+        marginBottom: 20,
+        border: "1px solid #e2e8f0",
+        borderRadius: 10,
+        overflow: "hidden",
+      }}
+    >
+      <div style={{ background: "#1e3a5f", color: "#fff", padding: "12px 16px" }}>
+        <div style={{ fontSize: 14, fontWeight: 700 }}>
+          {number}. {title}
+        </div>
+        <div style={{ fontSize: 11, color: "#93c5fd", marginTop: 2 }}>
+          {lblPerfect} parts: {perfect} | {lblImperfect} parts: {imperfect}
+          {cost ? ` | Estimated repair cost: ₹${cost}` : ""}
+        </div>
       </div>
-      <div style={{ fontSize: 11, color: "#93c5fd", marginTop: 2 }}>
-        Perfect parts: {perfect} | Imperfect parts: {imperfect}
-        {cost ? ` | Estimated repair cost: ₹${cost}` : ""}
-      </div>
+      <ParamsTable staticList={staticList} data={data} type={type} />
     </div>
-    <ParamsTable staticList={staticList} data={data} type={type} />
-  </div>
-);
+  );
+};
 
 const OemTable = ({
   title,
@@ -594,6 +613,7 @@ export default function ReportViewPage() {
   const { id } = useParams();
   const [d, setD] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+console.log("dddd",d);
 
   useEffect(() => {
     if (!id) return;
@@ -826,21 +846,21 @@ export default function ReportViewPage() {
     }[],
   };
 
-  const cnt = (obj: Record<string, string>, val: string) =>
-    Object.values(obj).filter((v) => v === val).length;
+  const cnt = (obj: Record<string, string>, vals: string[]) =>
+    Object.values(obj).filter((v) => vals.includes(v)).length;
 
-  const extP = cnt(r.params, "perfect"),
-    extI = cnt(r.params, "imperfect");
-  const engP = cnt(r.eng_params, "perfect"),
-    engI = cnt(r.eng_params, "imperfect");
-  const elecP = cnt(r.elec_params, "perfect"),
-    elecI = cnt(r.elec_params, "imperfect");
-  const strP = cnt(r.str_params, "perfect"),
-    strI = cnt(r.str_params, "imperfect");
-  const acP = cnt(r.ac_params, "perfect"),
-    acI = cnt(r.ac_params, "imperfect");
-  const othA = cnt(r.oth_params, "available"),
-    othN = cnt(r.oth_params, "not-available");
+  const extP = cnt(r.params, ["perfect", "good"]),
+    extI = cnt(r.params, ["imperfect", "bad"]);
+  const engP = cnt(r.eng_params, ["perfect", "good"]),
+    engI = cnt(r.eng_params, ["imperfect", "bad"]);
+  const elecP = cnt(r.elec_params, ["perfect", "good"]),
+    elecI = cnt(r.elec_params, ["imperfect", "bad"]);
+  const strP = cnt(r.str_params, ["perfect", "good"]),
+    strI = cnt(r.str_params, ["imperfect", "bad"]);
+  const acP = cnt(r.ac_params, ["perfect", "good"]),
+    acI = cnt(r.ac_params, ["imperfect", "bad"]);
+  const othA = cnt(r.oth_params, ["available"]),
+    othN = cnt(r.oth_params, ["not-available", "notavailable"]);
   const totalImperfect = extI + engI + strI;
   const totalCost =
     parseInt(r.repair_cost) +
@@ -1995,15 +2015,27 @@ export default function ReportViewPage() {
             gap: 14,
           })}
         >
-          {Array.from({ length: 8 }, (_, i) => (
-            <ImgBox
-              key={i}
-              url={r.vehicle_images[i]?.url || ""}
-              label={r.vehicle_images[i]?.label || `Image ${i + 1}`}
-              height={155}
-              showPlaceholder={true}
-            />
-          ))}
+          {Array.from({ length: 8 }, (_, i) => {
+            const defaultLabels = [
+              "Front",
+              "Rear",
+              "Front Right",
+              "Front Left",
+              "Right Side",
+              "Left Side",
+              "Left Rear",
+              "Right Rear"
+            ];
+            return (
+              <ImgBox
+                key={i}
+                url={r.vehicle_images[i]?.url || ""}
+                label={defaultLabels[i] || `Image ${i + 1}`}
+                height={155}
+                showPlaceholder={true}
+              />
+            );
+          })}
         </div>
       </ReportPage>
 
@@ -2017,6 +2049,7 @@ export default function ReportViewPage() {
           cost={r.repair_cost}
           staticList={PARAMS_LIST}
           data={r.params}
+          type="gb"
         />
       </ReportPage>
 
@@ -2231,258 +2264,8 @@ export default function ReportViewPage() {
         </div>
       </ReportPage>
 
-      {/* ══ PAGE 14 — OEM FEATURES (Safety + Fuel) ══════════════════════ */}
+      {/* ══ PAGE 14 — THANK YOU ══════════════════════════════════════════ */}
       <ReportPage pageNum={14}>
-        <h1
-          style={s({
-            fontSize: 22,
-            fontWeight: 800,
-            color: "#f97316",
-            marginBottom: 6,
-          })}
-        >
-          ✨ OEM installed features &amp; specs
-        </h1>
-        <p style={s({ fontSize: 12, color: "#64748b", marginBottom: 18 })}>
-          Understanding the features and specifications of the{" "}
-          <strong>{r.carName}</strong> is essential to ensure it aligns with
-          your preferences, needs, and lifestyle.
-        </p>
-        <div style={s({ display: "flex", gap: 10, marginBottom: 22 })}>
-          {[
-            { icon: "🪟", label: "Power window", value: r.oem_power_window },
-            { icon: "🛡️", label: "Airbags", value: r.oem_airbags_count },
-            {
-              icon: "💺",
-              label: "Seating capacity",
-              value: r.oem_seating_capacity,
-            },
-          ].map((x, i) => (
-            <div
-              key={i}
-              style={s({
-                flex: 1,
-                background: "#1e3a5f",
-                color: "#fff",
-                borderRadius: 10,
-                padding: "12px 14px",
-                display: "flex",
-                alignItems: "center",
-                gap: 10,
-              })}
-            >
-              <span style={{ fontSize: 22 }}>{x.icon}</span>
-              <div>
-                <div style={s({ fontSize: 10, color: "#93c5fd" })}>
-                  {x.label}
-                </div>
-                <div style={s({ fontSize: 15, fontWeight: 800 })}>
-                  {x.value}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-        <OemTable
-          title="🛡️ Safety"
-          rows={[
-            { label: "Front Fog Lights", value: r.oem_front_fog_lights },
-            { label: "ISOFIX-Child Seat Anchor Points", value: r.oem_isofix },
-            { label: "Anti-lock Braking System (ABS)", value: r.oem_abs },
-            { label: "Central Locking", value: r.oem_central_locking },
-            { label: "Rear Defogger", value: r.oem_rear_defogger },
-            { label: "Airbags", value: r.oem_airbags_safety },
-          ]}
-        />
-        <OemTable
-          title="🔥 Fuel & Performance"
-          rows={[
-            { label: "Max power (bhp)", value: r.oem_max_power_bhp },
-            { label: "Max torque (Nm)", value: r.oem_max_torque_nm },
-            { label: "Fuel tank capacity (lit)", value: r.oem_fuel_tank_lit },
-            { label: "Emission Standard", value: r.oem_emission_standard },
-          ]}
-        />
-      </ReportPage>
-
-      {/* ══ PAGE 15 — ENTERTAINMENT ════════════════════════════════════ */}
-      <ReportPage pageNum={15}>
-        <OemTable
-          title="🎵 Entertainment & Communication"
-          rows={[
-            { label: "Instrument Panel", value: r.oem_instrument_panel },
-            { label: "360 Camera", value: r.oem_360_camera },
-            { label: "Speaker Brand", value: r.oem_speaker_brand },
-            { label: "No. of Speakers", value: r.oem_no_of_speakers },
-            { label: "Infotainment", value: r.oem_infotainment },
-            { label: "GPS", value: r.oem_gps },
-            {
-              label: "Steering Audio Control",
-              value: r.oem_steering_audio_ctrl,
-            },
-            { label: "Smart Connectivity", value: r.oem_smart_connectivity },
-            {
-              label: "Entertainment Display Screen Size",
-              value: r.oem_display_screen_size,
-            },
-            {
-              label: "Multi-function Display Screen Size",
-              value: r.oem_multi_display_size,
-            },
-          ]}
-        />
-
-        <OemTable
-          title="📐 Dimensions & Capacity"
-          rows={[
-            { label: "Body Type", value: r.oem_body_type },
-            { label: "No Of Seating Rows", value: r.oem_seating_rows },
-            { label: "Seating Capacity", value: r.oem_seating_capacity },
-            { label: "Bootspace (litres)", value: r.oem_bootspace_lit },
-            { label: "Width (mm)", value: r.oem_width_mm },
-          ]}
-        />
-
-        
-      </ReportPage>
-
-      {/* ══ PAGE 16 — DIMENSIONS SVG DIAGRAM + ENGINE TABLE ════════════ */}
-      <ReportPage pageNum={16}>
-        <div
-          style={s({
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-            marginBottom: 14,
-          })}
-        ></div>
-
-        <OemTable
-          title="⚙️ Engine, Transmission & Brakes"
-          rows={[
-            { label: "Gear Box - No. of Gears", value: r.oem_gearbox_gears },
-            { label: "Displacement (cc)", value: r.oem_displacement_cc },
-            { label: "Transmission type", value: r.oem_transmission_type },
-            { label: "Cylinders", value: r.oem_cylinders },
-            { label: "Break type (rear)", value: r.oem_brake_rear },
-            { label: "Break type (front)", value: r.oem_brake_front },
-            { label: "Number of disc brakes", value: r.oem_disc_brakes },
-          ]}
-        />
-
-
-        <div
-          style={s({
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-            marginBottom: 14,
-          })}
-        >
-          <span style={{ fontSize: 16 }}>🛋️</span>
-          <h3
-            style={s({
-              fontSize: 15,
-              fontWeight: 700,
-              color: "#1e293b",
-              margin: 0,
-            })}
-          >
-            Comfort &amp; Convenience
-          </h3>
-        </div>
-        <OemTable
-          title=""
-          rows={[
-            { label: "Seat upholstery (cc)", value: r.oem_seat_upholstery },
-            { label: "Auto climate control", value: r.oem_auto_climate },
-            { label: "Wireless charging pad", value: r.oem_wireless_charging },
-            {
-              label: "Steering wheel material",
-              value: r.oem_steering_material,
-            },
-            { label: "Smart Card/Smart Key", value: r.oem_smart_key },
-            { label: "Top model", value: r.oem_top_model },
-          ]}
-        />
-      </ReportPage>
-
-      {/* ══ PAGE 17 — COMFORT & CONVENIENCE (PDF page 22 style) ════════ */}
-      <ReportPage pageNum={17}>
-        
-        {/* Icon grid — PDF page 22 style */}
-        <div
-          style={s({
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr 1fr",
-            gap: 12,
-            marginTop: 8,
-          })}
-        >
-          {[
-            {
-              label: "Parking sensors",
-              value: r.oem_parking_sensors,
-              icon: "📡",
-            },
-            { label: "Rear AC", value: r.oem_rear_ac, icon: "❄️" },
-            {
-              label: "Power windows",
-              value: r.oem_power_windows_pos,
-              icon: "🪟",
-            },
-            {
-              label: "Steering adjustment",
-              value: r.oem_steering_adjust,
-              icon: "🎡",
-            },
-            {
-              label: "Driver seat adjustment",
-              value: r.oem_driver_seat_adjust,
-              icon: "💺",
-            },
-            {
-              label: "Cruise control",
-              value: r.oem_cruise_control,
-              icon: "🛞",
-            },
-            {
-              label: "Air conditioner",
-              value: r.oem_air_conditioner,
-              icon: "❄️",
-            },
-            {
-              label: "Push button start",
-              value: r.oem_push_button_start,
-              icon: "🔘",
-            },
-          ].map((x, i) => (
-            <div
-              key={i}
-              style={s({
-                border: "1px solid #e2e8f0",
-                borderRadius: 10,
-                padding: "12px 14px",
-                background: "#f8fafc",
-                display: "flex",
-                flexDirection: "column",
-                gap: 4,
-              })}
-            >
-              <div style={s({ fontSize: 11, color: "#64748b" })}>{x.label}</div>
-              <div
-                style={s({ fontSize: 16, fontWeight: 800, color: "#1e293b" })}
-              >
-                {x.value}
-              </div>
-              <div style={s({ fontSize: 22, marginTop: 4 })}>{x.icon}</div>
-            </div>
-          ))}
-        </div>
-      </ReportPage>
-
-      {/* ══ PAGE 18 — THANK YOU ══════════════════════════════════════════ */}
-      <ReportPage pageNum={18}>
         <div style={s({ textAlign: "center", padding: "36px 20px" })}>
           <h1
             style={s({

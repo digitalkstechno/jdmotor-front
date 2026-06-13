@@ -1,9 +1,9 @@
 'use client';
 
 const PAGE_LABELS = [
-  'Vehicle Details', 'Car Summary', 'Legal',
-  'Category Ratings', 'Vehicle Images', 'Exterior & Tyres',
-  'Engine & More', 'Other Images', 'OEM Features'
+  'Part - 1', 'Car Summary', 'Legal',
+  'Vehicle Images', 'Exterior & Tyres',
+  'Engine & More', 'Category Ratings'
 ];
 
 interface Props {
